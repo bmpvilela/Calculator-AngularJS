@@ -1,26 +1,30 @@
+//Controller for AngularJS application
+//with injection of mathService service
+
 myApp.controller('appController', function($scope, mathService){
 
-    var number_1 = 0;
-    var number_2 = 0;
-    var operator = "";
+    var number_1 = 0;               //first opeation value
+    var number_2 = 0;               //second operation value
+    var operator = "";              //selected operation
+    $scope.result = 0;              //variable to store calulation value (accessible from view)
 
-    $scope.result = 0;
-
+    //selects a proper action for a given value (accessible from view)
     $scope.operation = function(value){
 
-        if (!isNaN(value)){
+        if (!isNaN(value)){         // if is a number concatenate whit previous value
             $scope.result = ($scope.result+value)*1;
-        }else if(value!="="){
+        }else if(value!="="){       // if not a equal sign stores the chosed operation
             number_1 = $scope.result;
             $scope.result = 0;
             operator = value;
-        }else{
+        }else{                      // is a equal sign, so perform a operation
             number_2 = $scope.result;
             doOperation(operator, number_1, number_2);
         }
-        
+
     }
 
+    //perform a chosed operation or call it from service (mathService)
     doOperation = function(operator, val1, val2) {
 
         switch(operator){
@@ -41,22 +45,4 @@ myApp.controller('appController', function($scope, mathService){
                 break;
         }
     }
-});
-
-myApp.service('mathService', function() {
-    this.add = function(val1, val2) {
-        return val1+val2;
-    };
-
-    this.subtract  = function(val1, val2) {
-        return  val1-val2;
-    };
-
-    this.multiply  = function(val1, val2) {
-        return  val1*val2;
-    };
-
-    this.divide  = function(val1, val2) {
-        return val1/val2;
-    };
 });
